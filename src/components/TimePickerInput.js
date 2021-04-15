@@ -7,58 +7,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles, withStyles } from "@material-ui/styles";
 import { getHours } from "date-fns";
 import { format } from "date-fns";
+import { addMinutes } from "date-fns";
 import SelectInput from "./SelectInput";
-
-const timeMenus = [
-  "12:00 AM",
-  "12:30 AM",
-  "01:00 AM",
-  "01:30 AM",
-  "02:00 AM",
-  "02:30 AM",
-  "03:00 AM",
-  "03:30 AM",
-  "04:00 AM",
-  "04:30 AM",
-  "05:00 AM",
-  "05:30 AM",
-  "06:00 AM",
-  "06:30 AM",
-  "07:00 AM",
-  "07:30 AM",
-  "08:00 AM",
-  "08:30 AM",
-  "09:00 AM",
-  "09:30 AM",
-  "10:00 AM",
-  "10:30 AM",
-  "11:00 AM",
-  "11:30 AM",
-  "12:00 PM",
-  "12:30 PM",
-  "01:00 PM",
-  "01:30 PM",
-  "02:00 PM",
-  "02:30 PM",
-  "03:00 PM",
-  "03:30 PM",
-  "04:00 PM",
-  "04:30 PM",
-  "05:00 PM",
-  "05:30 PM",
-  "06:00 PM",
-  "06:30 PM",
-  "07:00 PM",
-  "07:30 PM",
-  "08:00 PM",
-  "08:30 PM",
-  "09:00 PM",
-  "09:30 PM",
-  "10:00 PM",
-  "10:30 PM",
-  "11:00 PM",
-  "11:30 PM",
-];
 
 const CustomTextField = withStyles((theme) => ({
   input: {
@@ -135,22 +85,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// const generateTimeArray = () => {
-//   const hours = [];
+const generateTimeArray = () => {
+  const hours = [];
+  let hour = getHours(new Date());
+  hours.push(format(hour, "hh:mm a"));
 
-//   for (let hour = 0; hour < 24; hour++) {
-//     hour = format(getHours(new Date()), "hh:mm a..aa");
-//     hours.push(hour);
-//   }
+  for (let time = 0; time < 48; time++) {
+    hour = addMinutes(hour, 15);
+    hours.push(format(hour, "hh:mm a"));
+  }
 
-//   console.log(hours);
-// };
-
-// generateTimeArray();
+  return hours;
+};
 
 const TimePickerInput = () => {
   const classes = useStyles();
-  const [timeValue, setTimeValue] = useState("08:00 AM");
+  const [timeValue, setTimeValue] = useState("07:30 AM");
 
   const handleTimeChange = (e) => {
     setTimeValue(e.target.value);
@@ -183,7 +133,7 @@ const TimePickerInput = () => {
               value={timeValue}
               onChange={handleTimeChange}
             >
-              {timeMenus.map((menu) => {
+              {generateTimeArray().map((menu) => {
                 return (
                   <MenuItem key={menu} value={menu}>
                     {menu}
