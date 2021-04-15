@@ -20,7 +20,6 @@ function App() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        margin: "50px 0",
       }}
     >
       {!showModal && <button onClick={handleShowModal}>Show Popup</button>}

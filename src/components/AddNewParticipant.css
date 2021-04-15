@@ -1,9 +1,6 @@
 .new-participant {
-  /* border: 1px solid red; */
-
   width: 100%;
   height: 100%;
-  overflow-y: auto;
 }
 
 .new-participant-header {
@@ -39,7 +36,6 @@
 }
 
 .add-button {
-  /* border: 1px solid red; */
   margin-top: 20px;
   height: 50px;
   width: 100%;
@@ -54,11 +50,16 @@
   margin: 0 auto;
   background-color: #ffffff;
   color: #000000;
-
   text-transform: uppercase;
   font-family: "F37Judge-MediumCondensed";
   font-size: 25px;
   cursor: pointer;
+}
+
+.add-button .button:hover {
+  background-color: #000000;
+  color: white;
+  transition: all ease 0.5s;
 }
 
 .add-button .button:focus {

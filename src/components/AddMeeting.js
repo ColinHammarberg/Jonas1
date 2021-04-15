@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import "./AddMeeting.css";
+import React, { useState, useEffect } from "react";
 import logo from "../assets/images/SPCE-Logotype_White.svg";
 import CloseIcon from "@material-ui/icons/Close";
 import AddIcon from "@material-ui/icons/Add";
+import MenuItem from "@material-ui/core/MenuItem";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import TextAreaInput from "./TextAreaInput";
 import DatePickerInput from "./DatePickerInput";
 import TimePickerInput from "./TimePickerInput";
 import AddNewParticipant from "./AddNewParticipant";
+import "./AddMeeting.css";
 
 const AddMeeting = ({ onCloseModal }) => {
   const [isAddingParticipant, setIsAddingParticipant] = useState(false);
@@ -49,6 +50,18 @@ const AddMeeting = ({ onCloseModal }) => {
       selected: false,
     },
   ]);
+  const [selectedCount, setSelectedCount] = useState(0);
+  const [templateValue, setTemplateValue] = useState("No template");
+
+  const handleTemplateChange = (event) => {
+    setTemplateValue(event.target.value);
+  };
+
+  useEffect(() => {
+    if (participants) {
+      checkParticipantSelected();
+    }
+  });
 
   const handleAddParticipant = () => {
     setIsAddingParticipant(true);
@@ -61,6 +74,17 @@ const AddMeeting = ({ onCloseModal }) => {
         : participant
     );
     setParticipants(newParticipants);
+    checkParticipantSelected();
+  };
+
+  const checkParticipantSelected = () => {
+    let selected = 0;
+    participants.forEach((participant) => {
+      if (participant.selected === true) {
+        selected++;
+      }
+    });
+    setSelectedCount(selected);
   };
 
   const handleCloseParticipant = () => {
@@ -90,8 +114,15 @@ const AddMeeting = ({ onCloseModal }) => {
             <div className='agenda-left-col'>
               <div className='info'>
                 <h4 className='title'>Add information</h4>
-                <SelectInput label='Meeting template' />
-                <br />
+                <SelectInput
+                  label='Meeting template'
+                  value={templateValue}
+                  onChange={handleTemplateChange}
+                >
+                  <MenuItem value='No template'>No Template</MenuItem>
+                  <MenuItem value='Template 1'>Template 1</MenuItem>
+                  <MenuItem value='Template 2'>Template 2</MenuItem>
+                </SelectInput>
                 <TextInput
                   label='Meeting name'
                   defaultValue='First meeting with specification'
@@ -100,59 +131,65 @@ const AddMeeting = ({ onCloseModal }) => {
               </div>
               <div className='date'>
                 <h4 className='title'>Choose date and time</h4>
-                <div>
-                  <DatePickerInput />
-                </div>
-                <div>
-                  <TimePickerInput />
-                </div>
+                <DatePickerInput />
+                <TimePickerInput />
               </div>
             </div>
             <div className='agenda-right-col'>
-              {isAddingParticipant && (
+              {isAddingParticipant ? (
                 <AddNewParticipant
                   isAddingParticipant={isAddingParticipant}
                   data={participants}
                   onClose={handleCloseParticipant}
                   onAddNewParticipant={handleAddNewParticipant}
                 />
+              ) : (
+                <>
+                  <div className='agenda-right-col-header'>
+                    <h4 className='title'>Add participants</h4>
+                    <AddIcon
+                      className='add-icon'
+                      onClick={handleAddParticipant}
+                    />
+                  </div>
+                  <div className='list'>
+                    <p className='description'>
+                      Mark to select, or add new participants with +
+                    </p>
+                    <ul className='list-items'>
+                      {participants.map((participant) => {
+                        return (
+                          <li
+                            key={participant.id}
+                            className='participant'
+                            onClick={() =>
+                              handleSelectParticipant(participant.id)
+                            }
+                          >
+                            <div
+                              className={`participant-avatar ${
+                                participant.selected ? "selected" : ""
+                              }`}
+                            >
+                              {participant.avatar}
+                            </div>
+                            <div className='participant-details'>
+                              <div className='name'>{participant.name}</div>
+                              <div className='email'>{participant.email}</div>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </>
               )}
-              <div className='agenda-right-col-header'>
-                <h4 className='title'>Add participants</h4>
-                <AddIcon className='add-icon' onClick={handleAddParticipant} />
-              </div>
-              <div className='list'>
-                <p className='description'>
-                  Mark to select, or add new participants with +
-                </p>
-                <ul>
-                  {participants.map((participant) => {
-                    return (
-                      <li
-                        key={participant.id}
-                        className='participant'
-                        onClick={() => handleSelectParticipant(participant.id)}
-                      >
-                        <div
-                          className={`participant-avatar ${
-                            participant.selected ? "selected" : ""
-                          }`}
-                        >
-                          {participant.avatar}
-                        </div>
-                        <div className='participant-details'>
-                          <div className='name'>{participant.name}</div>
-                          <div className='email'>{participant.email}</div>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
             </div>
           </div>
           <div className='invite-button'>
-            <button>Invite to meeting</button>
+            <button className={`button ${selectedCount > 0 ? "selected" : ""}`}>
+              Invite to meeting
+            </button>
           </div>
         </div>
       </div>

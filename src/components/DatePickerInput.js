@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-  DatePicker,
-} from "@material-ui/pickers";
+import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/styles";
@@ -32,6 +28,14 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: 6,
       backgroundColor: "#F4F6F8",
     },
+    "& > .MuiInput-root": {
+      fontSize: 15,
+      textTransform: "uppercase",
+      fontFamily: "MediumLLWeb-Bold",
+    },
+    "& > .MuiInputBase-input": {
+      textTransform: "uppercase",
+    },
   },
 }));
 
@@ -45,11 +49,6 @@ const DatePickerInput = () => {
           Date
         </InputLabel>
         <DatePicker
-          style={{
-            fontSize: 15,
-            textTransform: "uppercase",
-            fontFamily: "MediumLLWeb-Bold",
-          }}
           classes={{ root: classes.datePicker }}
           variant='inline'
           value={selectedDate}

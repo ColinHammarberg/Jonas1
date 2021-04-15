@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import "./AddNewParticipant.css";
 import TextInput from "./TextInput";
-import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
 
 const AddNewParticipant = ({ data, onClose, onAddNewParticipant }) => {
-  const [participants, setParticipants] = useState(data);
   const [newParticipant, setNewParticipant] = useState({
     firstName: "",
     lastName: "",
@@ -27,7 +25,7 @@ const AddNewParticipant = ({ data, onClose, onAddNewParticipant }) => {
     }
 
     const participant = {
-      id: participants.length + 1,
+      id: data.length + 1,
       avatar: `${newParticipant.firstName.charAt(
         0
       )}${newParticipant.lastName.charAt(0)}`,
@@ -75,8 +73,8 @@ const AddNewParticipant = ({ data, onClose, onAddNewParticipant }) => {
             label='First Name'
             name='firstName'
             value={newParticipant.firstName}
-            defaultValue='Rasmus'
             onChange={handleOnChange}
+            error={error.firstName}
           />
         </div>
         <div className='last-name'>
@@ -84,8 +82,8 @@ const AddNewParticipant = ({ data, onClose, onAddNewParticipant }) => {
             label='Last Name'
             value={newParticipant.lastName}
             name='lastName'
-            defaultValue='Hammarberg'
             onChange={handleOnChange}
+            error={error.lastName}
           />
         </div>
       </div>
@@ -95,7 +93,7 @@ const AddNewParticipant = ({ data, onClose, onAddNewParticipant }) => {
           value={newParticipant.email}
           name='email'
           onChange={handleOnChange}
-          defaultValue='rasmus.hammarberg@meetingmaker.se'
+          error={error.email}
         />
       </div>
       <div className='add-button'>

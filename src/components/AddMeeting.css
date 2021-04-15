@@ -27,8 +27,6 @@
   align-items: center;
   font-size: 15px;
   font-family: "MediumLLWeb-Regular";
-  margin: 50px 0;
-  margin-bottom: 60px;
 }
 
 .popup {
@@ -76,38 +74,32 @@
 
 /* agenda */
 .agenda {
-  /* border: 1px solid red; */
-  margin: 40px;
-  height: 70%;
+  margin: 25px;
+  height: 75%;
   border-radius: 6px;
   background-color: #ffffff;
   display: flex;
 }
 
 .agenda .agenda-left-col {
-  /* border: 1px solid red; */
   width: 50%;
-  margin: 30px;
+  padding: 30px;
 }
 .agenda .title {
   font-size: 15px;
   font-family: "MediumLLWeb-Bold";
 }
 
-.agenda .info {
-  /* border: 1px solid red; */
-}
-
 .agenda .agenda-right-col {
-  /* border: 1px solid green; */
   width: 50%;
-  margin: 30px;
-  overflow-y: hidden;
+  padding: 30px;
+  height: 100%;
 }
 
 .agenda-right-col-header {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .agenda-right-col-header .add-icon {
@@ -118,7 +110,14 @@
 }
 
 .agenda-right-col .list {
-  margin-top: 20px;
+  height: 95%;
+  overflow: hidden;
+}
+
+.agenda-right-col .list-items {
+  overflow-y: auto;
+  padding-right: 0;
+  height: 89%;
 }
 
 .agenda-right-col .description {
@@ -127,7 +126,6 @@
 }
 
 .agenda-right-col .participant {
-  /* border: 1px solid red; */
   display: flex;
   width: 100%;
   margin-top: 15px;
@@ -139,7 +137,6 @@
 
 .participant .participant-avatar {
   width: 25%;
-  /* border: 1px solid green; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,11 +153,9 @@
 }
 
 .participant .participant-details {
-  /* border: 1px solid green; */
   width: 75%;
   display: flex;
   flex-direction: column;
-  /* justify-content: flex-start; */
   align-items: flex-start;
   padding: 15px 0;
   padding-left: 20px;
@@ -180,28 +175,48 @@
 }
 
 .invite-button {
-  /* border: 1px solid red; */
   height: 40px;
   width: 300px;
   margin: 0 auto;
 }
 
-.invite-button button {
+.invite-button .button {
   width: 100%;
   height: 100%;
   border-radius: 105px;
   border: none;
-  background-color: #000000;
+  background-color: #dcdfe1;
   color: #ffffff;
   text-transform: uppercase;
   font-family: "F37Judge-MediumCondensed";
   font-size: 23px;
+  pointer-events: none;
+}
+
+.invite-button .selected {
+  background-color: #000000;
+  pointer-events: all;
   cursor: pointer;
 }
 
-/* Override css */
-/* .MuiInputBase-input {
-  font-size: 15px;
-  text-transform: uppercase;
-  font-family: "MediumLLWeb-Bold";
-} */
+.invite-button .selected:focus {
+  outline: none;
+}
+
+.agenda-right-col .list-items::-webkit-scrollbar {
+  width: 2px;
+}
+
+.agenda-right-col .list-items::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 10px;
+}
+
+.agenda-right-col .list-items::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+  border-radius: 20px;
+}
+
+.agenda-right-col .list-items::-webkit-scrollbar-thumb:hover {
+  background-color: #ffffff;
+}

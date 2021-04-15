@@ -2,6 +2,7 @@ import React from "react";
 import InputBase from "@material-ui/core/InputBase";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import { withStyles, makeStyles } from "@material-ui/styles";
 
 const CustomTextField = withStyles((theme) => ({
@@ -12,7 +13,7 @@ const CustomTextField = withStyles((theme) => ({
   },
   input: {
     borderRadius: 6,
-    // position: "relative",
+    position: "relative",
     backgroundColor: "#F4F6F8",
     fontSize: 15,
     width: "100%",
@@ -29,29 +30,35 @@ const useStyles = makeStyles((theme) => ({
   label: {
     color: "#4E4E53 !important",
     fontSize: "18px",
+
     fontFamily: "MediumLLWeb-Regular",
   },
-  margin: {
+  form: {
     margin: "10px 0",
     width: "100%",
+
+    "& > .MuiFormHelperText-root": {
+      color: "red",
+    },
   },
 }));
 
 const TextInput = ({ label, defaultValue, onChange, name, value, error }) => {
   const classes = useStyles();
   return (
-    <FormControl className={classes.margin}>
+    <FormControl className={classes.form}>
       <InputLabel shrink htmlFor='text-input' className={classes.label}>
         {label}
       </InputLabel>
       <CustomTextField
         defaultValue={defaultValue}
         value={value}
-        // id='text-input'
+        id='text-input'
         onChange={onChange}
         name={name}
         error={error}
       />
+      <FormHelperText>{error}</FormHelperText>
     </FormControl>
   );
 };
