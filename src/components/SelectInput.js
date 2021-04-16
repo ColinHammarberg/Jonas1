@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SelectInput = ({ label, onChange, value, children }) => {
+const SelectInput = ({ name, label, onChange, value, children }) => {
   const classes = useStyles();
 
   return (
@@ -65,6 +65,7 @@ const SelectInput = ({ label, onChange, value, children }) => {
       <Select
         labelId='select-input-label '
         id='select-input'
+        name={name}
         value={value}
         onChange={onChange}
         input={<CustomTextField />}

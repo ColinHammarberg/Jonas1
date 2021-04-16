@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -11,10 +11,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "5px",
     fontFamily: "MediumLLWeb-Regular",
   },
-  margin: {
-    margin: "10px 0",
-    width: "100%",
-  },
   datePicker: {
     borderRadius: 6,
     position: "relative",
@@ -22,15 +18,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 12,
     width: "70%",
     padding: "3px 12px",
-    fontFamily: "MediumLLWeb-Bold",
-    textTransform: "uppercase",
     "&:focus": {
       borderRadius: 6,
       backgroundColor: "#F4F6F8",
     },
     "& > .MuiInput-root": {
       fontSize: 15,
-      textTransform: "uppercase",
       fontFamily: "MediumLLWeb-Bold",
     },
     "& > .MuiInputBase-input": {
@@ -39,21 +32,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DatePickerInput = () => {
+const DatePickerInput = ({ value, onChange }) => {
   const classes = useStyles();
-  const [selectedDate, handleDateChange] = useState(new Date());
   return (
     <div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <InputLabel htmlFor='select-input-label' className={classes.label}>
-          Date
-        </InputLabel>
+        <InputLabel className={classes.label}>Date</InputLabel>
         <DatePicker
           classes={{ root: classes.datePicker }}
           variant='inline'
-          value={selectedDate}
+          value={value}
           format='MMMM dd, yyyy'
-          onChange={handleDateChange}
+          onChange={onChange}
           InputProps={{ disableUnderline: true }}
         />
       </MuiPickersUtilsProvider>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -9,6 +9,7 @@ import { getHours } from "date-fns";
 import { format } from "date-fns";
 import { addMinutes } from "date-fns";
 import SelectInput from "./SelectInput";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const CustomTextField = withStyles((theme) => ({
   input: {
@@ -19,7 +20,6 @@ const CustomTextField = withStyles((theme) => ({
     textTransform: "uppercase",
     width: "100%",
     padding: "10px 12px",
-    fontFamily: "MediumLLWeb-Bold",
     "&:focus": {
       borderRadius: 6,
       backgroundColor: "#F4F6F8",
@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 6,
     backgroundColor: "#F4F6F8",
     fontSize: 15,
-    // width: "100%",
     padding: "3px 8px",
     "&:focus": {
       borderRadius: 6,
@@ -62,11 +61,20 @@ const useStyles = makeStyles((theme) => ({
   },
   time: {
     width: "55%",
-    marginRight: 10,
+    // marginRight: 10,
+
+    "& > .MuiFormHelperText-root": {
+      color: "red",
+    },
   },
   duration: {
     width: "45%",
     marginLeft: 10,
+
+    "& > .MuiFormHelperText-root": {
+      color: "red",
+      fontSize: 11,
+    },
   },
 
   input: {
@@ -87,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
 
 const generateTimeArray = () => {
   const hours = [];
+
   let hour = getHours(new Date());
   hours.push(format(hour, "hh:mm a"));
 
@@ -98,13 +107,8 @@ const generateTimeArray = () => {
   return hours;
 };
 
-const TimePickerInput = () => {
+const TimePickerInput = ({ timeValue, durationValue, onChange, error }) => {
   const classes = useStyles();
-  const [timeValue, setTimeValue] = useState("07:30 AM");
-
-  const handleTimeChange = (e) => {
-    setTimeValue(e.target.value);
-  };
 
   return (
     <React.Fragment>
@@ -130,8 +134,9 @@ const TimePickerInput = () => {
             /> */}
             <SelectInput
               label='Time'
+              name='time'
               value={timeValue}
-              onChange={handleTimeChange}
+              onChange={onChange}
             >
               {generateTimeArray().map((menu) => {
                 return (
@@ -141,6 +146,7 @@ const TimePickerInput = () => {
                 );
               })}
             </SelectInput>
+            <FormHelperText>{error.time}</FormHelperText>
           </div>
           <div className={classes.duration}>
             <InputLabel htmlFor='duration' className={classes.label}>
@@ -149,10 +155,13 @@ const TimePickerInput = () => {
             <CustomTextField
               id='duration'
               label='Duration'
+              name='duration'
               type='number'
               style={{ width: "100%" }}
-              defaultValue={45}
+              onChange={onChange}
+              value={durationValue}
             />
+            <FormHelperText>{error.duration}</FormHelperText>
           </div>
         </div>
       </MuiPickersUtilsProvider>

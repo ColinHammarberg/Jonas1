@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
   label: {
     color: "#4E4E53 !important",
     fontSize: "18px",
-
     fontFamily: "MediumLLWeb-Regular",
   },
   form: {
@@ -39,11 +38,12 @@ const useStyles = makeStyles((theme) => ({
 
     "& > .MuiFormHelperText-root": {
       color: "red",
+      fontSize: 11,
     },
   },
 }));
 
-const TextInput = ({ label, defaultValue, onChange, name, value, error }) => {
+const TextInput = ({ label, onChange, name, value, error }) => {
   const classes = useStyles();
   return (
     <FormControl className={classes.form}>
@@ -51,9 +51,7 @@ const TextInput = ({ label, defaultValue, onChange, name, value, error }) => {
         {label}
       </InputLabel>
       <CustomTextField
-        defaultValue={defaultValue}
         value={value}
-        id='text-input'
         onChange={onChange}
         name={name}
         error={error}

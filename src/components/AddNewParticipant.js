@@ -43,7 +43,7 @@ const AddNewParticipant = ({ data, onClose, onAddNewParticipant }) => {
     let isValid = true;
 
     if (firstName === "") {
-      errors.firstName = "This field is required.";
+      errors.firstName = "This field is required";
     }
     if (lastName === "") {
       errors.lastName = "This field is required";

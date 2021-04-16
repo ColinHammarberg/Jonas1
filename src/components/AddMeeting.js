@@ -9,9 +9,20 @@ import TextAreaInput from "./TextAreaInput";
 import DatePickerInput from "./DatePickerInput";
 import TimePickerInput from "./TimePickerInput";
 import AddNewParticipant from "./AddNewParticipant";
+import { getHours, format } from "date-fns";
 import "./AddMeeting.css";
 
 const AddMeeting = ({ onCloseModal }) => {
+  const initialMeetingDetails = {
+    template: "No template",
+    name: "First meeting with specification",
+    description: "We meet up to...",
+    date: format(new Date(), "MMMM dd,yyyy"),
+    time: format(getHours(new Date()), "hh:mm a"),
+    duration: 45,
+    participants: [],
+  };
+  const [meetingDetails, setMeetingDetails] = useState(initialMeetingDetails);
   const [isAddingParticipant, setIsAddingParticipant] = useState(false);
   const [participants, setParticipants] = useState([
     {
@@ -51,17 +62,73 @@ const AddMeeting = ({ onCloseModal }) => {
     },
   ]);
   const [selectedCount, setSelectedCount] = useState(0);
-  const [templateValue, setTemplateValue] = useState("No template");
-
-  const handleTemplateChange = (event) => {
-    setTemplateValue(event.target.value);
-  };
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (participants) {
       checkParticipantSelected();
     }
   });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const validation = validateForm();
+    if (!validation) {
+      return;
+    }
+
+    const selectedParticipants = participants.filter(
+      (participant) => participant.selected === true
+    );
+
+    setMeetingDetails({
+      ...meetingDetails,
+      participants: selectedParticipants,
+    });
+
+    console.log(meetingDetails);
+    console.log(selectedParticipants);
+  };
+
+  const validateForm = () => {
+    const { name, description, time, duration } = meetingDetails;
+    let errors = {};
+    let isValid = true;
+
+    if (name === "") {
+      errors.name = "This field is required";
+    }
+    if (description === "") {
+      errors.description = "This field is required";
+    }
+    if (time === "") {
+      errors.time = "This field is required";
+    }
+    if (duration === "") {
+      errors.duration = "This field is required";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      isValid = false;
+    }
+
+    setErrors(errors);
+
+    return isValid;
+  };
+
+  const handleInputOnChange = ({ target: input }) => {
+    const { name, value } = input;
+    setMeetingDetails({ ...meetingDetails, [name]: value });
+  };
+
+  const handleDateChange = (date) => {
+    setMeetingDetails({
+      ...meetingDetails,
+      date: format(date, "MMMM dd,yyyy"),
+    });
+  };
 
   const handleAddParticipant = () => {
     setIsAddingParticipant(true);
@@ -116,8 +183,9 @@ const AddMeeting = ({ onCloseModal }) => {
                 <h4 className='title'>Add information</h4>
                 <SelectInput
                   label='Meeting template'
-                  value={templateValue}
-                  onChange={handleTemplateChange}
+                  name='template'
+                  value={meetingDetails.template}
+                  onChange={handleInputOnChange}
                 >
                   <MenuItem value='No template'>No Template</MenuItem>
                   <MenuItem value='Template 1'>Template 1</MenuItem>
@@ -125,14 +193,33 @@ const AddMeeting = ({ onCloseModal }) => {
                 </SelectInput>
                 <TextInput
                   label='Meeting name'
+                  name='name'
                   defaultValue='First meeting with specification'
+                  value={meetingDetails.name}
+                  onChange={handleInputOnChange}
+                  error={errors.name}
                 />
-                <TextAreaInput label='Description' />
+                <TextAreaInput
+                  label='Description'
+                  name='description'
+                  value={meetingDetails.description}
+                  onChange={handleInputOnChange}
+                  error={errors.description}
+                />
               </div>
               <div className='date'>
                 <h4 className='title'>Choose date and time</h4>
-                <DatePickerInput />
-                <TimePickerInput />
+                <DatePickerInput
+                  value={meetingDetails.date}
+                  onChange={handleDateChange}
+                />
+                <TimePickerInput
+                  // name='time'
+                  timeValue={meetingDetails.time}
+                  durationValue={meetingDetails.duration}
+                  onChange={handleInputOnChange}
+                  error={errors}
+                />
               </div>
             </div>
             <div className='agenda-right-col'>
@@ -187,7 +274,10 @@ const AddMeeting = ({ onCloseModal }) => {
             </div>
           </div>
           <div className='invite-button'>
-            <button className={`button ${selectedCount > 0 ? "selected" : ""}`}>
+            <button
+              className={`button ${selectedCount > 0 ? "selected" : ""}`}
+              onClick={handleSubmit}
+            >
               Invite to meeting
             </button>
           </div>
