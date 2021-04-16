@@ -39,6 +39,7 @@ const DatePickerInput = ({ value, onChange }) => {
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <InputLabel className={classes.label}>Date</InputLabel>
         <DatePicker
+          autoOk
           classes={{ root: classes.datePicker }}
           variant='inline'
           value={value}
